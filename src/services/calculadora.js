@@ -37,15 +37,16 @@ export const calcularPrecoVendaSugerido = (custoTotal, config = CONFIG_PADRAO) =
 
 /**
  * Calcula a margem real de um prato
+ * Considera: Simples + Cartão + Custo Fixo (alocação)
  */
 export const calcularMargemReal = (precoVenda, custoTotal, config = CONFIG_PADRAO) => {
   if (precoVenda <= 0) return 0
 
-  const { taxaSimples, taxaCartao } = config
+  const { taxaSimples, taxaCartao, custoFixoPercent } = config
 
-  // Descontar impostos e taxas do preco
-  const impostos = precoVenda * ((taxaSimples + taxaCartao) / 100)
-  const lucro = precoVenda - custoTotal - impostos
+  // Descontar impostos, taxas e alocação de custo fixo
+  const deducoes = precoVenda * ((taxaSimples + taxaCartao + custoFixoPercent) / 100)
+  const lucro = precoVenda - custoTotal - deducoes
   const margem = (lucro / precoVenda) * 100
 
   return margem

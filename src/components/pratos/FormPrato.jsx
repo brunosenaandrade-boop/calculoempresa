@@ -114,8 +114,10 @@ const FormPrato = ({ prato, insumos, onSubmit, onCancel }) => {
     label: `${ins.nome} (${formatCurrency(ins.precoUnitario)}/${ins.unidade})`
   }))
 
-  const margemColor = margemReal >= 30 ? 'text-success' : margemReal >= 15 ? 'text-warning' : 'text-danger'
-  const margemBaixo = precoVendaReal > 0 && margemReal < 15
+  // Margem >= lucro desejado (15%) = verde, >= metade = amarelo, abaixo = vermelho
+  const lucroDesejado = configuracoes.lucroDesejado || 15
+  const margemColor = margemReal >= lucroDesejado ? 'text-success' : margemReal >= lucroDesejado / 2 ? 'text-warning' : 'text-danger'
+  const margemBaixo = precoVendaReal > 0 && margemReal < lucroDesejado
 
   return (
     <div className="space-y-4">
